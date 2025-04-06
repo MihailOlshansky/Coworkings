@@ -16,14 +16,13 @@ class RoleService @Autowired constructor(
         return repository
     }
 
-    fun findByCode(code: RoleCodes): Role {
+    override fun getEntityName(): String {
+        return "Роль"
+    }
 
-        val role: Role? = this.repository.findByCode(code.toString())
-        if (role == null) {
-            if (role == null) {
-                throw Exception("Роль с кодом " + code + " не найдена")
-            }
-        }
+    fun findByCode(code: RoleCodes): Role {
+        val role: Role = this.repository.findByCode(code.toString())
+            ?: throw Exception("Роль с кодом $code не найдена")
 
         return role
     }

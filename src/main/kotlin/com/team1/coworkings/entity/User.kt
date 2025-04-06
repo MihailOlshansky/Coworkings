@@ -1,5 +1,6 @@
 package com.team1.coworkings.entity
 
+import com.team1.coworkings.base.BaseEntity
 import jakarta.persistence.*
 
 @Entity
@@ -17,7 +18,16 @@ data class User(
     var email: String,
     @Column(name = "password", nullable = false)
     var password: String = "",
+
     @ManyToOne
-    @JoinColumn(name = "role", referencedColumnName = "id")
-    var role: Role
-)
+    @JoinColumn(name = "roleId", referencedColumnName = "id")
+    var role: Role,
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], targetEntity = Booking::class)
+    var bookings: List<Booking> = listOf(),
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], targetEntity = LikedCoworking::class)
+    var likedCoworkings: List<LikedCoworking> = listOf()
+) : BaseEntity {
+    override fun getPk(): Long {
+        return id
+    }
+}

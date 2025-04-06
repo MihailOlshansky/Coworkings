@@ -22,24 +22,17 @@ class UserController @Autowired constructor(
     private val service: UserService,
     private val mapper: UserMapper
 ) : BaseController<User, UserDto> {
-
-    @GetMapping("find/{id}")
-    fun findUserById(@PathVariable(value = "id") id: Long): UserDto? {
-        val user: User = this.service.findById(id) ?: return null
-        return this.mapper.entityToDto(user)
-    }
-
-    @PostMapping("register")
-    fun register(@RequestBody(required = true) userRegisterDto: UserRegisterDto): Boolean {
-        this.service.save(this.mapper.userRegisterDtoToUser(userRegisterDto))
-        return true
-    }
-
     override fun getService(): BaseService<User> {
         return this.service
     }
 
     override fun getMapper(): BaseMapper<User, UserDto> {
         return this.mapper
+    }
+
+    @PostMapping("register")
+    fun register(@RequestBody(required = true) userRegisterDto: UserRegisterDto): Boolean {
+        this.service.save(this.mapper.userRegisterDtoToUser(userRegisterDto))
+        return true
     }
 }

@@ -1,10 +1,14 @@
 package com.team1.coworkings.base
 
+import com.team1.coworkings.exception.EntityNotFoundException
+import com.team1.coworkings.exception.EntitySaveError
 import jakarta.persistence.Entity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.util.CollectionUtils
 
 interface BaseService<E : Any> {
     fun getRepository(): JpaRepository<E, Long>
+    fun getEntityName(): String
 
     fun findAll(): List<E> {
         return this.getRepository().findAll()
@@ -14,7 +18,24 @@ interface BaseService<E : Any> {
         return this.getRepository().findById(id).orElse(null)
     }
 
+    fun findByIdNonNull(id: Long): E {
+        return this.getRepository().findById(id).orElseThrow {
+            EntityNotFoundException(getEntityName())
+        }
+    }
+
+    fun findAllById(ids: Collection<Long>): List<E> {
+        if (CollectionUtils.isEmpty(ids)) {
+            return listOf()
+        }
+        return this.getRepository().findAllById(ids)
+    }
+
     fun save(entity: E): E {
-        return this.getRepository().save(entity)
+        try {
+            return this.getRepository().save(entity)
+        } catch (e: Exception) {
+            throw EntitySaveError(getEntityName(), e)
+        }
     }
 }

@@ -14,4 +14,8 @@ class UserService @Autowired constructor(
     override fun getRepository(): JpaRepository<User, Long> {
         return this.repository;
     }
+
+    override fun getEntityName(): String {
+        return "Пользователь"
+    }
 }

@@ -33,6 +33,10 @@ class BookingService @Autowired constructor(
         this.save(booking)
     }
 
+    fun cancelBooking(id: Long) {
+        repository.deleteById(id)
+    }
+
     private fun checkBooking(booking: Booking) {
         if (!booking.dateFrom.before(booking.dateTo)
             || CommonUtils.setDateTime(booking.dateFrom, BEGIN_TIME) != CommonUtils.setDateTime(booking.dateTo, BEGIN_TIME)

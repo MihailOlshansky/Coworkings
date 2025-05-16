@@ -31,6 +31,14 @@ interface BaseService<E : Any> {
         return this.getRepository().findAllById(ids)
     }
 
+    fun deleteById(id: Long) {
+        this.getRepository().deleteById(id)
+    }
+
+    fun delete(entity: E) {
+        this.getRepository().delete(entity)
+    }
+
     fun save(entity: E): E {
         try {
             return this.getRepository().save(entity)

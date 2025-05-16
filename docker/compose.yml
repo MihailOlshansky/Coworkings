@@ -1,12 +1,19 @@
 version: '3.8'
 # docker compose -f docker/compose.yml -p coworkings up -d --build --remove-orphans
+
+networks:
+  net:
+
+volumes:
+  postgres_data:
+
 services:
   backend:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     ports:
-      - "8080:4200"
+      - "4200:4200"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=user
@@ -14,9 +21,11 @@ services:
       - SOME_OTHER_VARIABLE=example_value
     depends_on:
       - db
+    networks: [net]
 
   db:
     image: postgres:16-alpine
+    restart: always
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
@@ -25,6 +34,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks: [net]
 
-volumes:
-  postgres_data:
+  adminer:
+    image: adminer:4.8.1-standalone
+    deploy: null
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks: [net]

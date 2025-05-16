@@ -10,7 +10,4 @@ COPY src ./src
 
 RUN ./mvnw clean package -DskipTests
 
-RUN ls -lah /app
-RUN ls -lah /app/target
-
 CMD ["java", "-jar", "./target/coworkings-0.0.1-SNAPSHOT.jar"]

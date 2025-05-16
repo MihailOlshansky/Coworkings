@@ -39,6 +39,14 @@ interface BaseService<E : Any> {
         this.getRepository().delete(entity)
     }
 
+    fun update(id: Long, entity: E): E {
+        if (this.getRepository().existsById(id)) {
+            return this.save(entity)
+        } else {
+            throw EntityNotFoundException(getEntityName())
+        }
+    }
+
     fun save(entity: E): E {
         try {
             return this.getRepository().save(entity)

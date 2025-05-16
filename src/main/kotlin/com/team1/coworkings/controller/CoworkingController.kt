@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.PutMapping
 
 @RestController
 @RequestMapping("coworking/")
@@ -32,5 +33,10 @@ class CoworkingController @Autowired constructor(
     @PostMapping("create")
     fun createCoworking(@RequestBody coworkingDto: CoworkingDto) {
         service.create(mapper.dtoToEntity(coworkingDto))
+    }
+
+    @PutMapping("{id}")
+    fun updateCoworking(@PathVariable id: Long, @RequestBody coworkingDto: CoworkingDto) {
+        service.update(id, mapper.dtoToEntity(coworkingDto))
     }
 }

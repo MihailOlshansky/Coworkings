@@ -6,8 +6,10 @@ import com.team1.coworkings.exception.EntityNotFoundException
 import com.team1.coworkings.exception.LogicalException
 import com.team1.coworkings.repository.BookingRepository
 import com.team1.coworkings.utils.CommonUtils
+import com.team1.coworkings.utils.events.CoworkingWorkingHoursUpdatedEvent
 import org.apache.commons.lang3.time.DateUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.event.EventListener
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -35,6 +37,23 @@ class BookingService @Autowired constructor(
 
     fun cancelBooking(id: Long) {
         repository.deleteById(id)
+    }
+
+    @EventListener
+    fun handleCoworkingUpdatedEvent(event: CoworkingWorkingHoursUpdatedEvent) {
+        val bookings = repository.findAllByCoworkingId(event.coworkingId)
+        bookings.forEach { booking ->
+            if (!isBookingValid(booking, event.newOpenFrom, event.newOpenTo)) {
+                delete(booking)
+            }
+        }
+    }
+
+    private fun isBookingValid(booking: Booking, openFrom: String, openTo: String): Boolean {
+        val openFromDate = CommonUtils.setDateTime(booking.dateFrom, openFrom)
+        val openToDate = CommonUtils.setDateTime(booking.dateFrom, openTo)
+
+        return booking.dateFrom.after(openFromDate) && booking.dateTo.before(openToDate)
     }
 
     private fun checkBooking(booking: Booking) {

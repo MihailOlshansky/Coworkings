@@ -40,6 +40,8 @@ class BookingService @Autowired constructor(
     private fun checkBooking(booking: Booking) {
         if (!booking.dateFrom.before(booking.dateTo)
             || CommonUtils.setDateTime(booking.dateFrom, BEGIN_TIME) != CommonUtils.setDateTime(booking.dateTo, BEGIN_TIME)
+            || booking.dateFrom.before(CommonUtils.setDateTime(booking.dateFrom, booking.coworking.openFrom))
+            || booking.dateTo.after(CommonUtils.setDateTime(booking.dateTo, booking.coworking.openTo))
         ) {
             throw LogicalException("Неверный период бронирования")
         }

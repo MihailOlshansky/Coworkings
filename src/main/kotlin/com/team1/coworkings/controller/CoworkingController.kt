@@ -4,6 +4,7 @@ import com.team1.coworkings.base.BaseController
 import com.team1.coworkings.base.BaseMapper
 import com.team1.coworkings.base.BaseService
 import com.team1.coworkings.dto.CoworkingDto
+import com.team1.coworkings.dto.CoworkingFilter
 import com.team1.coworkings.entity.Coworking
 import com.team1.coworkings.mappers.CoworkingMapper
 import com.team1.coworkings.service.CoworkingService
@@ -32,5 +33,10 @@ class CoworkingController @Autowired constructor(
     @PostMapping("create")
     fun createCoworking(@RequestBody coworkingDto: CoworkingDto) {
         service.create(mapper.dtoToEntity(coworkingDto))
+    }
+
+    @PostMapping("find-with-filters")
+    fun findWithFilters(@RequestBody coworkingFilter: CoworkingFilter): List<CoworkingDto> {
+        return mapper.entityToDto(service.findWithFilter(coworkingFilter))
     }
 }

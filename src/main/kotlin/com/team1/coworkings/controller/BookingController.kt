@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
 @RequestMapping("booking/")
@@ -32,5 +33,10 @@ class BookingController @Autowired constructor(
     @PostMapping("book")
     fun bookCoworking(@RequestBody bookingDto: BookingDto) {
         this.service.bookCoworking(this.mapper.dtoToEntity(bookingDto))
+    }
+
+    @DeleteMapping("{id}")
+    fun cancelBooking(@PathVariable id: Long) {
+        this.service.cancelBooking(id)
     }
 }

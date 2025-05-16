@@ -1,10 +1,8 @@
 package com.team1.coworkings.service
 
 import com.team1.coworkings.base.BaseService
-import com.team1.coworkings.dto.CoworkingDto
 import com.team1.coworkings.dto.CoworkingFilter
 import com.team1.coworkings.entity.Coworking
-import com.team1.coworkings.entity.CoworkingInventory
 import com.team1.coworkings.exception.LogicalException
 import com.team1.coworkings.repository.CoworkingRepository
 import com.team1.coworkings.utils.CommonUtils

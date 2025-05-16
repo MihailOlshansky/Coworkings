@@ -2,15 +2,12 @@ package com.team1.coworkings.service
 
 import com.team1.coworkings.base.BaseService
 import com.team1.coworkings.entity.Booking
-import com.team1.coworkings.exception.EntityNotFoundException
 import com.team1.coworkings.exception.LogicalException
 import com.team1.coworkings.repository.BookingRepository
 import com.team1.coworkings.utils.CommonUtils
-import org.apache.commons.lang3.time.DateUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
-import java.time.Duration
 
 @Service
 class BookingService @Autowired constructor(
